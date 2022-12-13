@@ -6,6 +6,7 @@ const DigitButton = ({ dispatch, digit }: IDispatch): ReactElement<IDispatch> =>
   return (
     <button
       onClick={() => dispatch({ type: Action.ADD_DIGIT, payload: { digit } })}
+      date-cy={`button${digit}`}
     >
       {digit}
     </button>

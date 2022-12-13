@@ -83,6 +83,7 @@ const reducer = (state: any, action: ActionReducer) => {
         state.currentOperand == null ||
         state.previousOperand == null
       ) {
+     
         return state;
       }
 
@@ -96,29 +97,27 @@ const reducer = (state: any, action: ActionReducer) => {
   }
 }
 
-const evaluate = (state: IState): string => {
+const evaluate =  (state: IState) => {
   const prev: number = parseFloat(state.previousOperand);
   const current: number = parseFloat(state.currentOperand);
+  // calling the backend.
+  if (isNaN(prev) || isNaN(current)) return "";  
 
-  if (isNaN(prev) || isNaN(current)) return "";
-  let computation: number = 0;
+  const backendResponse =  (async () => {
+  const rawResponse = await fetch('localhost:8080/doMath', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({operand1: current, operand2: prev, operation: state.operation})
+  });
+  const content = await rawResponse.json();
 
-  switch (state.operation) {
-    case "+":
-      computation = prev + current;
-      break;
-    case "-":
-      computation = prev - current;
-      break;
-    case "/":
-      computation = prev / current;
-      break;
-    case "*":
-      computation = prev * current;
-      break;
-  }
+  return content.data.calcResponse.toString();
+})()
+return backendResponse;
 
-  return computation.toString();
 }
 
 const INTEGER_FORMATTER = new Intl.NumberFormat("en-us", {
