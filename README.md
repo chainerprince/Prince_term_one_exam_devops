@@ -6,6 +6,8 @@
 
 ## I used typescript for type safety.
 
+Integration testing are in component folder inside cypress.
+
 ### Dependencies Installed...
 * "@testing-library/jest-dom": "^5.16.3",
 * "@testing-library/react": "^13.0.0",

@@ -32,6 +32,12 @@ describe('calculator', function () {
         cy.get('[data-cy=buttonDivide]').click();
         cy.get('[data-cy=button2]').click();
         cy.get('[data-cy=buttonEquals]').click();
+        cy.request('POST', 'http://localhost:8080/doMath', { operand1: cy.get('[data-cy=button8]').value(),operand2:cy.get('[data-cy=button2]').value(),operation:"/" }).then(
+  (response) => {
+    
+    expect(response.body).to.have.property('calcResponse', '4') // true
+  }
+)
         cy.get('[data-cy=result]').should('have.value', '4')
     });
 
